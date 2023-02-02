@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+ //  Q1. Write a program to find all pairs of an integer array whose sum is equal to a given number?
+ // Solution :
+ function getPairsCount(array,n,sum){
+  let temp=[]
+  for(let i=0;i<n;i++){
+    for(let j=i+1;j<n;j++){
+      if(array[i]+array[j]==sum){
+        temp.push(array[i],array[j]);
+      }
+    }
+  }
+  return temp;
+ }
+ var array=[1,2,3,4,5,6];
+ var n=array.length;
+ var sum=6;
+ console.log(getPairsCount(array,n,sum));
+  
+
+//  Q2. Write a program to reverse an array in place? In place means you cannot create a new array. You have to update    the original array.
+// Solution :
+function reverseArray(arr) {
+  let start = 0;
+  let end = arr.length - 1;
+  while (start < end) {
+    let temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+    start++;
+    end--;
+  }
+  return arr;
+}
+
+let arr = [1, 2, 3, 4, 5];
+console.log(reverseArray(arr)); // [5, 4, 3, 2, 1]
+
+
+// Q3. Write a program to check if two strings are a rotation of each other?
+// Solution :
+function isRotation(str1, str2) {
+  if (str1.length !== str2.length) {
+    return false;
+  }
+
+  let str = str1 + str1;
+  return str.includes(str2);
+}
+
+console.log(isRotation("hello", "llohe")); // true
+console.log(isRotation("hello", "helol")); // false
+
+
+// Q4. Write a program to print the first non-repeated character from a string?
+// Solution :
+function firstNonRepeated(str) {
+  let charCount = {};
+  for (let i = 0; i < str.length; i++) {
+    if (charCount[str[i]]) {
+      charCount[str[i]]++;
+    } else {
+      charCount[str[i]] = 1;
+    }
+  }
+
+  for (let i = 0; i < str.length; i++) {
+    if (charCount[str[i]] === 1) {
+      return str[i];
+    }
+  }
+  return null;
+}
+
+console.log(firstNonRepeated("hello")); // "h"
+console.log(firstNonRepeated("javascript")); // "j"
+
+// Q5. Read about the Tower of Hanoi algorithm. Write a program to implement it.
+// Solution :
+function towerOfHanoi(n,first_rod,second_rod,third_rod){
+    if(n==0){
+        return;
+    }
+    towerOfHanoi(n-1,first_rod,second_rod,third_rod);
+    console.log("Move disk"+ " " + n +" "+ "first rod"+" " + first_rod +" "+ "second rod"+" " + second_rod);
+    towerOfHanoi(n-1,third_rod,second_rod,first_rod);
+}
+var n=3;
+console.log(towerOfHanoi(n,"A","B","C"));
+
+
+// Q6. Write a program to convert prefix expression to infix expression.
+// Solution :
+function isOperator(x){
+  switch(x){
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+    case '^':
+    case '%':
+    return true;
+  }
+  return false;
+}
+function convert(str){
+  let stack=[];
+  let l=str.length;
+  for(let i=l-1;i>=0;i--){
+    let c=str[i];
+    if(isOperator(c)){
+      let op1=stack[stack.length-1];
+      stack.pop();
+      let op2=stack[stack.length-1];
+      stack.pop();
+      let temp="(" + op1 + c + op2 +")";
+      stack.push(temp);
+    }
+    else{
+      stack.push(c + "");
+    }
+  }
+  return stack[stack.length-1];
+}
+let exp="+*4/21-/543";
+console.log("Infix : "+convert(exp));
+
+
+          
+
+
+
+// Q7. Read about infix, prefix, and postfix expressions. Write a program to convert postfix to prefix expression.
+// Solution :
+function isOperator(x){
+  switch(x){
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+    return true;
+  }
+  return false;
+}
+function postfixToPrefix(post_exp){
+  let s=[];
+  let length=post_exp.length;
+  for(let i=0;i<length;i++){
+    if(isOperator(post_exp[i])){
+      let op1=s[s.length-1];
+      s.pop();
+      let op2=s[s.length-1];
+      s.pop();
+
+      let temp=post_exp[i]+op2+op1;
+      s.push(temp);
+    }
+    else{
+      s.push(post_exp[i]+"");
+    }
+  }
+  let ans="";
+  while(s.length>0){
+    ans+=s.pop();
+    return ans;
+  } 
+}
+let post_exp="623/-72/5-*";
+console.log("Prefix :"+ postfixToPrefix(post_exp));
+
+// Q8. Write a program to check if all the brackets are closed in a given code snippet.
+// Solution :
+function areBracketsClosed(code) {
+    let stack = [];
+  
+    for (let i = 0; i < code.length; i++) {
+        let char = code[i];
+  
+        if (char === "(" || char === "{" || char === "[") {
+            stack.push(char);
+        } else if (char === ")" || char === "}" || char === "]") {
+            if (stack.length === 0) {
+                return false;
+            }
+  
+            let lastBracket = stack.pop();
+  
+            if (char === ")" && lastBracket !== "(" ||
+                char === "}" && lastBracket !== "{" ||
+                char === "]" && lastBracket !== "[") {
+                return false;
+            }
+        }
+    }
+  
+    return stack.length === 0;
+}
+let code = "({{[}])}";
+let result = areBracketsClosed(code);
+console.log(result); // Output: true
+
+code = "if (({[])}";
+result = areBracketsClosed(code);
+console.log(result); // Output: false
+
+
+// Q9. Write a program to reverse a stack.
+// Solution :
+var st=[];
+function insertAtLast(x){
+  if(st.length==0){
+    st.push(x);
+  }else{
+    let a=st.pop();
+    insertAtLast(x);
+    st.push(a);
+    
+  }
+}
+function reverse(){
+  if(st.length>0){
+    let x=st.pop();
+    reverse();
+    insertAtLast(x);
+  }
+}
+st.push(1);
+st.push(2);
+st.push(3);
+st.push(4);
+console.log(st.join(" "));
+reverse();
+console.log(st.join(" "));
+
+// Q10. Write a program to find the smallest number using a stack
+// SOlution :
+class MyStack{
+  constructor(){
+    this.s=[];
+    this.minEle;
+  }
+  getMin(){
+    if(this.s.length==0){
+      console.log("Stack is empty");
+    }
+    else{
+      console.log("Min element of stack is ",this.minEle);
+    }
+  }
+    push(x){
+      if(this.s.length==0){
+        this.minEle=x;
+        this.s.unshift(x);
+        console.log("Number Inserted ",x);
+        return;
+      }
+      else if(x<this.minELe){
+        this.s.unshift(2*x-this.minEle);
+        this.minEle=x;
+      }else{
+        this.s.unshift(x);
+        console.log("Number Inserted ",x);
+      }
+    }
+}
+let s=new MyStack();
+s.push(3);
+s.push(5);
+s.getMin();
+   
+    </script>
+</body>
+</html>
